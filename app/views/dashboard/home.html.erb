@@ -15,6 +15,16 @@
 .nav-link {
     padding: 5rem 1rem;
     font-size: 3em;
+    color: black;
+    background: #fff;
+    transition: background-color .6s;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #dee2e6;
+}
+.nav-link:hover {
+	color: black;
 }
 </style>
 
@@ -26,6 +36,10 @@
 		  $(this).tab('show');
 
 		  $(temp_line).remove();
+
+		  $(this).animate({
+		  	'opacity': 1
+		  }, 600);
 
 		  var animate_ref = $('#nav-tabContent').children('div[data-animate-ref="'+$(this).attr('data-animate-ref')+'"]');
 
@@ -39,7 +53,7 @@
 		  $(animate_ref).append(temp_line);
 		  $(temp_line).css({
 		  	'position': 'absolute',
-		  	'height': 1,
+		  	'height': 2,
 		  	'top': tab_height,
 		  	'left': offset_left + (tab_width/2),
 		  	'background': 'green'
