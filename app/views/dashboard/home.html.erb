@@ -1,17 +1,28 @@
 <nav class="nav-fill">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-van-tab" data-toggle="tab" href="#nav-van" role="tab" data-animate-ref="van" aria-controls="nav-van" aria-selected="true">Van</a>
-    <a class="nav-item nav-link" id="nav-16ft-tab" data-toggle="tab" href="#nav-16ft" role="tab" data-animate-ref="16ft" aria-controls="nav-16ft" aria-selected="false">16ft</a>
-    <a class="nav-item nav-link" id="nav-26ft-tab" data-toggle="tab" href="#nav-26ft" role="tab" data-animate-ref="26ft" aria-controls="nav-26ft" aria-selected="false">26ft</a>
+    <a class="nav-item nav-link active" id="nav-van-tab" data-toggle="tab" href="#nav-van" role="tab" data-animate-ref="van" aria-controls="nav-van" aria-selected="true">Van<span class="weight-limit">(1000Lbs Limit)<span></a>
+    <a class="nav-item nav-link" id="nav-16ft-tab" data-toggle="tab" href="#nav-16ft" role="tab" data-animate-ref="16ft" aria-controls="nav-16ft" aria-selected="false">16ft<span class="weight-limit">(7500Lbs Limit)<span></a>
+    <a class="nav-item nav-link" id="nav-26ft-tab" data-toggle="tab" href="#nav-26ft" role="tab" data-animate-ref="26ft" aria-controls="nav-26ft" aria-selected="false">26ft<span class="weight-limit">(10,000Lbs Limit)<span></a>
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-van" role="tabpanel" aria-labelledby="nav-van-tab" data-animate-ref="van">Van Test</div>
-  <div class="tab-pane fade" id="nav-16ft" role="tabpanel" aria-labelledby="nav-16ft-tab" data-animate-ref="16ft">16ft Test</div>
-  <div class="tab-pane fade" id="nav-26ft" role="tabpanel" aria-labelledby="nav-26ft-tab" data-animate-ref="26ft">26ft Test</div>
+  <div class="tab-pane fade show active" id="nav-van" role="tabpanel" aria-labelledby="nav-van-tab" data-animate-ref="van"></div>
+  <div class="tab-pane fade" id="nav-16ft" role="tabpanel" aria-labelledby="nav-16ft-tab" data-animate-ref="16ft"></div>
+  <div class="tab-pane fade" id="nav-26ft" role="tabpanel" aria-labelledby="nav-26ft-tab" data-animate-ref="26ft"></div>
+</div>
+<div class="temp-line"></div>
+<br>
+<center><h1>Search A ZIP Code</h1></center><br>
+<div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-lg">ZIP Code</span>
+  </div>
+  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
 </div>
 
+
 <style type="text/css">
+
 .nav-link {
     padding: 5rem 1rem;
     font-size: 3em;
@@ -26,11 +37,32 @@
 .nav-link:hover {
 	color: black;
 }
+
+.weight-limit {
+	font-size: 20px;
+	display: block;
+}
+
+.input-group-lg > .input-group-prepend > .input-group-text {
+	width: 25.5em;
+	padding-left: 11em;
+}
+
 </style>
 
 <script type="text/javascript">
 	var temp_line;
 	jQuery(function($){
+		temp_line = $('.temp-line');
+		$(temp_line).css({
+		  	'position': 'absolute',
+		  	'height': 2,
+		  	'width': $('.nav-link.active').outerWidth(),
+		  	'top': $('.nav-link.active').outerHeight(),
+		  	'left': $('.nav-link.active').offset().left,
+		  	'background': 'green'
+		  });
+
 		$('#nav-tab a').on('click', function (e) {
 		  e.preventDefault()
 		  $(this).tab('show');
