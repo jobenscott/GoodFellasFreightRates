@@ -1,0 +1,50 @@
+<nav class="nav-fill">
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-van-tab" data-toggle="tab" href="#nav-van" role="tab" data-animate-ref="van" aria-controls="nav-van" aria-selected="true">Van</a>
+    <a class="nav-item nav-link" id="nav-16ft-tab" data-toggle="tab" href="#nav-16ft" role="tab" data-animate-ref="16ft" aria-controls="nav-16ft" aria-selected="false">16ft</a>
+    <a class="nav-item nav-link" id="nav-26ft-tab" data-toggle="tab" href="#nav-26ft" role="tab" data-animate-ref="26ft" aria-controls="nav-26ft" aria-selected="false">26ft</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-van" role="tabpanel" aria-labelledby="nav-van-tab" data-animate-ref="van">Van Test</div>
+  <div class="tab-pane fade" id="nav-16ft" role="tabpanel" aria-labelledby="nav-16ft-tab" data-animate-ref="16ft">16ft Test</div>
+  <div class="tab-pane fade" id="nav-26ft" role="tabpanel" aria-labelledby="nav-26ft-tab" data-animate-ref="26ft">26ft Test</div>
+</div>
+
+<script type="text/javascript">
+	var temp_line;
+	jQuery(function($){
+		$('#nav-tab a').on('click', function (e) {
+		  e.preventDefault()
+		  $(this).tab('show');
+
+		  $(temp_line).remove();
+
+		  var animate_ref = $('#nav-tabContent').children('div[data-animate-ref="'+$(this).attr('data-animate-ref')+'"]');
+
+		  var tab_height = $(this).outerHeight();
+		  var tab_width = $(this).outerWidth();
+		  var offset_left = $(this).offset().left;
+		  console.log(offset_left);
+
+		  temp_line = $('<div class="temp-line"></div>');
+
+		  $(animate_ref).append(temp_line);
+		  $(temp_line).css({
+		  	'position': 'absolute',
+		  	'height': 1,
+		  	'top': tab_height,
+		  	'left': offset_left + (tab_width/2),
+		  	'background': 'green'
+		  });
+
+
+
+		  $(temp_line).animate({
+		  	'width': tab_width,
+		  	'left': offset_left
+		  }, 600);
+
+		});
+	});
+</script>
