@@ -126,6 +126,21 @@ body div.btn.bigger-btn {
 		  	'left': offset_left
 		  }, 600);
 
+		  if($('#rate-display').hasClass('initialized')) {
+		  	var rate_ref = $('.nav-link.active').attr('data-rate-ref');
+			var zipcode = $('#zipcode-input').val();
+
+			$.ajax({
+				url: "dashboard/get_rates",
+				type: 'GET',
+  				data: {'rate_ref': rate_ref, 'zipcode': zipcode},
+  				success: function(data) {
+  					rate = Number(data).toFixed(2);
+  					$('#rate-display').text('$'+rate);
+  					$('#rate-display').addClass('initialized');
+  				}
+			});
+		  }
 		});
 
 		$('#get-rates').on('click', function(){
@@ -140,6 +155,7 @@ body div.btn.bigger-btn {
   				success: function(data) {
   					rate = Number(data).toFixed(2);
   					$('#rate-display').text('$'+rate);
+  					$('#rate-display').addClass('initialized');
   				}
 			});
 		});
