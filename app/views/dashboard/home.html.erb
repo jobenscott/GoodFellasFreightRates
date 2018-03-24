@@ -1,8 +1,8 @@
 <nav class="nav-fill">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="nav-van-tab" data-toggle="tab" href="#nav-van" role="tab" data-animate-ref="van" aria-controls="nav-van" aria-selected="true">Van<span class="weight-limit">(1000Lbs Limit)<span></a>
-    <a class="nav-item nav-link" id="nav-16ft-tab" data-toggle="tab" href="#nav-16ft" role="tab" data-animate-ref="16ft" aria-controls="nav-16ft" aria-selected="false">16ft<span class="weight-limit">(7500Lbs Limit)<span></a>
-    <a class="nav-item nav-link" id="nav-26ft-tab" data-toggle="tab" href="#nav-26ft" role="tab" data-animate-ref="26ft" aria-controls="nav-26ft" aria-selected="false">26ft<span class="weight-limit">(10,000Lbs Limit)<span></a>
+    <a class="nav-item nav-link active" id="nav-van-tab" data-toggle="tab" href="#nav-van" role="tab" data-animate-ref="van" data-rate-ref="van-rates" aria-controls="nav-van" aria-selected="true">Van<span class="weight-limit">(1000Lbs Limit)<span></a>
+    <a class="nav-item nav-link" id="nav-16ft-tab" data-toggle="tab" href="#nav-16ft" role="tab" data-animate-ref="16ft" data-rate-ref="16ft-rates" aria-controls="nav-16ft" aria-selected="false">16ft<span class="weight-limit">(7500Lbs Limit)<span></a>
+    <a class="nav-item nav-link" id="nav-26ft-tab" data-toggle="tab" href="#nav-26ft" role="tab" data-animate-ref="26ft" data-rate-ref="26ft-rates" aria-controls="nav-26ft" aria-selected="false">26ft<span class="weight-limit">(10,000Lbs Limit)<span></a>
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -17,12 +17,16 @@
   <div class="input-group-prepend">
     <span class="input-group-text" id="inputGroup-sizing-lg">ZIP Code</span>
   </div>
-  <input type="text" class="form-control large-font" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+  <input type="text" id="zipcode-input" class="form-control large-font" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
 </div>
 
 <br><br>
 
-<center><div class="btn btn-lg btn-success bigger-btn">Get Rates</div></center>
+<center><div class="btn btn-lg btn-success bigger-btn" id="get-rates">Get Rates</div></center>
+
+<br><br>
+
+<div id="rate-display">Search A Zipcode For A Rate...</div>
 
 <style type="text/css">
 
@@ -61,6 +65,15 @@ body div.btn.bigger-btn {
 	width: 18em;
     height: 3em;
     line-height: 2;
+}
+
+#rate-display {
+	width: 100%;
+	height: 4em;
+	background-color: lightgray;
+	font-size: 4em;
+	line-height: 3.5;
+	text-align: center;
 }
 
 </style>
@@ -113,6 +126,22 @@ body div.btn.bigger-btn {
 		  	'left': offset_left
 		  }, 600);
 
+		});
+
+		$('#get-rates').on('click', function(){
+
+			var rate_ref = $('.nav-link.active').attr('data-rate-ref');
+			var zipcode = $('#zipcode-input').val();
+			console.log(zipcode);
+			$.ajax({
+				url: "dashboard/get_rates",
+				type: 'GET',
+  				data: {'rate_ref': rate_ref, 'zipcode': zipcode},
+  				success: function(data) {
+  					rate = Number(data).toFixed(2);
+  					$('#rate-display').text('$'+rate);
+  				}
+			});
 		});
 	});
 </script>

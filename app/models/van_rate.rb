@@ -1,0 +1,2 @@
+class VanRate < ApplicationRecord
+end

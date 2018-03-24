@@ -1,0 +1,2 @@
+class TwentySixFootRate < ApplicationRecord
+end
