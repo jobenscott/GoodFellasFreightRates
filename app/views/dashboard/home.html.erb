@@ -12,21 +12,31 @@
 </div>
 <div class="temp-line"></div>
 <br>
-<center><h1>Search A ZIP Code</h1></center><br>
+<center><h1>Starting ZipCode(Origin)</h1></center><br>
 <div class="input-group input-group-lg">
   <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-lg">ZIP Code</span>
+    <span class="input-group-text" id="inputGroup-sizing-lg">Starting ZIP Code</span>
   </div>
-  <input type="text" id="zipcode-input" class="form-control large-font" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+  <input type="text" id="starting-zipcode-input" class="form-control large-font" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
 </div>
 
 <br><br>
 
-<center><div class="btn btn-lg btn-success bigger-btn" id="get-rates">Get Rates</div></center>
+<center><h1>Starting ZipCode(Destination)</h1></center><br>
+<div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-lg">Ending ZIP Code</span>
+  </div>
+  <input type="text" id="ending-zipcode-input" class="form-control large-font" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+</div>
 
 <br><br>
 
-<div id="rate-display">Search A Zipcode For A Rate...</div>
+<center><div class="btn btn-lg btn-success bigger-btn" id="get-rates">Get Rate</div></center>
+
+<br><br>
+
+<div id="rate-display">...</div>
 
 <style type="text/css">
 
@@ -80,6 +90,7 @@ body div.btn.bigger-btn {
 
 <script type="text/javascript">
 	var temp_line;
+	var miles;
 	jQuery(function($){
 		temp_line = $('.temp-line');
 		$(temp_line).css({
@@ -120,45 +131,87 @@ body div.btn.bigger-btn {
 		  });
 
 
-
+		  // animate line
 		  $(temp_line).animate({
 		  	'width': tab_width,
 		  	'left': offset_left
 		  }, 600);
 
-		  if($('#rate-display').hasClass('initialized')) {
-		  	var rate_ref = $('.nav-link.active').attr('data-rate-ref');
-			var zipcode = $('#zipcode-input').val();
 
-			$.ajax({
-				url: "dashboard/get_rates",
-				type: 'GET',
-  				data: {'rate_ref': rate_ref, 'zipcode': zipcode},
-  				success: function(data) {
-  					rate = Number(data).toFixed(2);
-  					$('#rate-display').text('$'+rate);
-  					$('#rate-display').addClass('initialized');
-  				}
-			});
+		  if($('#rate-display').hasClass('initialized')) {
+		  	var directionsService = new google.maps.DirectionsService;
+			calculateAndDisplayRoute(directionsService);
 		  }
 		});
 
-		$('#get-rates').on('click', function(){
+		// $('#get-rates').on('click', function(){
 
-			var rate_ref = $('.nav-link.active').attr('data-rate-ref');
-			var zipcode = $('#zipcode-input').val();
-			console.log(zipcode);
-			$.ajax({
-				url: "dashboard/get_rates",
-				type: 'GET',
-  				data: {'rate_ref': rate_ref, 'zipcode': zipcode},
-  				success: function(data) {
-  					rate = Number(data).toFixed(2);
-  					$('#rate-display').text('$'+rate);
-  					$('#rate-display').addClass('initialized');
-  				}
-			});
+		// 	var rate_ref = $('.nav-link.active').attr('data-rate-ref');
+		// 	var zipcode = $('#zipcode-input').val();
+		// 	console.log(zipcode);
+		// 	$.ajax({
+		// 		url: "dashboard/get_rates",
+		// 		type: 'GET',
+  // 				data: {'rate_ref': rate_ref, 'zipcode': zipcode},
+  // 				success: function(data) {
+  // 					rate = Number(data).toFixed(2);
+  // 					$('#rate-display').text('$'+rate);
+  // 					$('#rate-display').addClass('initialized');
+  // 				}
+		// 	});
+		// });
+
+			$('#get-rates').on('click', function(){
+			var directionsService = new google.maps.DirectionsService;
+			calculateAndDisplayRoute(directionsService);
 		});
+
+
+      	function calculateAndDisplayRoute(directionsService) {
+	        directionsService.route({
+	          origin: document.getElementById('starting-zipcode-input').value,
+	          destination: document.getElementById('ending-zipcode-input').value,
+	          travelMode: 'DRIVING'
+	          // trafficModel: 'BEST_GUESS'
+	        }, function(response, status) {
+	          if (status === 'OK') {
+	            // directionsDisplay.setDirections(response);
+	            // console.log(response);
+	            var test_response = response['routes'][0]['legs'][0]['distance'];
+	            miles = parseInt(test_response['value'])*(0.000621371);
+
+
+	           get_rates(miles);
+	          } else {
+	            window.alert('Directions request failed due to ' + status);
+	          }
+	        });
+	    }
+
+	    function get_rates(miles) {
+			var rate_ref = $('.nav-link.active').attr('data-rate-ref');
+
+	    	 $.ajax({
+					url: "dashboard/get_rates",
+					type: 'GET',
+	  				data: {'miles': miles, 'rate_ref': rate_ref},
+	  				success: function(data) {
+	  					rate = Number(data).toFixed(2);
+	  					$('#rate-display').text('$'+rate);
+	  					$('#rate-display').addClass('initialized');
+	  				}
+				});
+	    }
+
 	});
+
+	
+	// google maps api stuff
+
+
+
 </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZxbBGxzV2sy-yXu_9iLCBqnaVur5ww20">
+    </script>
 
