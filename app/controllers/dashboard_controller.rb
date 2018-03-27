@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
   def home
-  	
+  	# @g_maps_js_api_key = 
 
   end
 
@@ -10,6 +10,7 @@ class DashboardController < ApplicationController
 
   def get_rates
   	rate_ref = params[:rate_ref].to_s
+
   	# zipcode = params[:zipcode]
 
   	miles = params[:miles].to_i

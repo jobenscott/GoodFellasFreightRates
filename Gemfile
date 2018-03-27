@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+
 # jquery-rails for bootstrap
 gem 'jquery-rails'
 # Bootstrap
